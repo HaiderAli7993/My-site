@@ -1,0 +1,243 @@
+
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Nunito:wght@400;600;700;800&display=swap');
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'Nunito',sans-serif;background:#FFF8F0;overflow-x:hidden;color:#2d2d2d}
+  .page{display:none;animation:fadeIn 0.4s ease}
+  .page.active{display:block}
+  @keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+  canvas#cc{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:99}
+  .fh{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:98;overflow:hidden}
+  .heart{position:absolute;animation:fup linear infinite;opacity:0}
+  @keyframes fup{0%{transform:translateY(100vh) rotate(0deg);opacity:0}10%{opacity:.7}90%{opacity:.7}100%{transform:translateY(-20vh) rotate(360deg);opacity:0}}
+  nav{display:flex;justify-content:center;flex-wrap:wrap;gap:6px;padding:10px 8px;background:rgba(255,255,255,0.92);border-bottom:2px dashed #FFD166;position:sticky;top:0;z-index:200}
+  .nb{background:none;border:none;cursor:pointer;font-family:'Nunito',sans-serif;font-weight:800;font-size:0.78rem;color:#9B5DE5;padding:4px 8px;border-radius:20px;transition:background .2s,color .2s;letter-spacing:.3px}
+  .nb:hover,.nb.on{background:#9B5DE5;color:white}
+  h1,h2,h3{font-family:'Dancing Script',cursive}
+  .hero{min-height:90vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:3rem 1.2rem 3rem;background:linear-gradient(135deg,#fff0fb,#f0f0ff,#f0fff9);position:relative;overflow:hidden}
+  .he{font-size:3.5rem;animation:bounce 1.5s ease infinite;display:block;margin-bottom:.3rem}
+  @keyframes bounce{0%,100%{transform:translateY(0) rotate(-5deg)}50%{transform:translateY(-12px) rotate(5deg)}}
+  .ht{font-size:clamp(2.5rem,9vw,5.5rem);line-height:1.1;background:linear-gradient(135deg,#FF4FA7,#9B5DE5,#FF6B6B);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:pop .8s cubic-bezier(.36,.07,.19,.97)}
+  @keyframes pop{0%{transform:scale(.5);opacity:0}70%{transform:scale(1.05)}100%{transform:scale(1);opacity:1}}
+  .hs{font-size:clamp(1.1rem,3.5vw,1.8rem);color:#9B5DE5;margin:.4rem 0 1.2rem;font-family:'Dancing Script',cursive}
+  .hn{max-width:580px;font-size:.98rem;line-height:1.8;color:#555;background:white;border-radius:20px;padding:1.3rem 1.6rem;border:2px solid #FFD166;box-shadow:0 6px 24px rgba(255,79,167,.12);position:relative}
+  .hn::before{content:'💌';position:absolute;top:-16px;left:50%;transform:translateX(-50%);font-size:1.6rem}
+  section.pg{padding:2.5rem 1.2rem 3rem;max-width:900px;margin:0 auto}
+  .st{font-size:clamp(2rem,6vw,3rem);text-align:center;margin-bottom:.4rem;background:linear-gradient(135deg,#9B5DE5,#FF4FA7);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+  .ss{text-align:center;color:#999;margin-bottom:2rem;font-size:.85rem;font-weight:700;letter-spacing:1px}
+  .gg{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:1.3rem}
+  .pc{background:white;border-radius:14px;overflow:hidden;box-shadow:0 5px 20px rgba(0,0,0,.08);border:3px solid white;transition:transform .3s,box-shadow .3s}
+  .pc:nth-child(1){outline:2px dashed #FF4FA7;transform:rotate(-1.5deg)}
+  .pc:nth-child(2){outline:2px dashed #06D6A0;transform:rotate(1deg)}
+  .pc:nth-child(3){outline:2px dashed #9B5DE5;transform:rotate(-.8deg)}
+  .pc:nth-child(4){outline:2px dashed #FF6B6B;transform:rotate(1.5deg)}
+  .pc:hover{transform:rotate(0) scale(1.04)!important;box-shadow:0 10px 35px rgba(155,93,229,.2)}
+  .pp{height:160px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.4rem;font-size:2.5rem}
+  .pc:nth-child(1) .pp{background:linear-gradient(135deg,#ffe0f0,#ffb3d9)}
+  .pc:nth-child(2) .pp{background:linear-gradient(135deg,#d0fff3,#9ffade)}
+  .pc:nth-child(3) .pp{background:linear-gradient(135deg,#ede0ff,#d4b3ff)}
+  .pc:nth-child(4) .pp{background:linear-gradient(135deg,#ffe8d0,#ffcba4)}
+  .pp span{font-size:.65rem;font-weight:700;letter-spacing:.5px;opacity:.45}
+  .cap{padding:.65rem 1rem;font-size:.85rem;font-weight:700;color:#444;text-align:center}
+  .rl{list-style:none;display:flex;flex-direction:column;gap:.9rem}
+  .ri{display:flex;align-items:flex-start;gap:.9rem;background:white;border-radius:14px;padding:.9rem 1.1rem;box-shadow:0 3px 12px rgba(0,0,0,.06);border-left:4px solid #FF4FA7;opacity:0;transform:translateX(-30px);transition:opacity .5s ease,transform .5s ease}
+  .ri.vis{opacity:1;transform:translateX(0)}
+  .ri:nth-child(even){border-left-color:#06D6A0}
+  .ri:nth-child(3n){border-left-color:#9B5DE5}
+  .ri:nth-child(4n){border-left-color:#FFD166}
+  .rn{font-family:'Dancing Script',cursive;font-size:1.8rem;color:#FF4FA7;min-width:1.8rem;line-height:1}
+  .ri:nth-child(even) .rn{color:#06D6A0}
+  .ri:nth-child(3n) .rn{color:#9B5DE5}
+  .rt{font-size:.9rem;line-height:1.6;color:#444;padding-top:.25rem}
+  .rt strong{color:#9B5DE5}
+  .ac{background:linear-gradient(135deg,#2d1b69,#6b21a8,#9d174d);border-radius:24px;padding:2.5rem 1.5rem;text-align:center;color:white;box-shadow:0 16px 50px rgba(155,93,229,.3)}
+  .act{font-size:2.2rem;color:#FFD166;margin-bottom:.4rem}
+  .acs{font-size:.82rem;opacity:.65;margin-bottom:1.8rem;letter-spacing:1px}
+  .ng{display:flex;flex-wrap:wrap;justify-content:center;gap:.9rem;margin-bottom:1.8rem}
+  .np{background:rgba(255,255,255,.12);border:1.5px solid rgba(255,255,255,.22);border-radius:50px;padding:.7rem 1.2rem;text-align:center;transition:transform .3s,background .3s;min-width:145px;cursor:default}
+  .np:hover{transform:translateY(-4px) scale(1.04);background:rgba(255,255,255,.22)}
+  .na{display:block;font-size:1.4rem;font-family:'Dancing Script',cursive;color:#FFD166;margin-bottom:.15rem}
+  .ne{display:block;font-size:.72rem;opacity:.78;letter-spacing:.4px}
+  .am{font-size:.92rem;line-height:1.8;opacity:.88;max-width:480px;margin:0 auto;background:rgba(255,255,255,.08);border-radius:14px;padding:.9rem 1.3rem;border:1px solid rgba(255,255,255,.15)}
+  .cb{background:white;border-radius:24px;padding:2.5rem 1.8rem;box-shadow:0 10px 40px rgba(255,79,167,.13);border:3px solid transparent;background-clip:padding-box;position:relative;text-align:center}
+  .cb::before{content:'';position:absolute;inset:-3px;border-radius:27px;background:linear-gradient(135deg,#FF4FA7,#FFD166,#06D6A0,#9B5DE5);z-index:-1}
+  .ct{font-size:2.2rem;color:#9B5DE5;margin-bottom:.9rem}
+  .cx{font-size:.98rem;line-height:1.85;color:#555}
+  .cs{margin-top:1.3rem;font-family:'Dancing Script',cursive;font-size:1.6rem;background:linear-gradient(135deg,#FF4FA7,#9B5DE5);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+  .bh{font-size:3.2rem;display:block;margin:.9rem 0;animation:hb 1.2s ease infinite}
+  @keyframes hb{0%,100%{transform:scale(1)}15%{transform:scale(1.2)}30%{transform:scale(1)}45%{transform:scale(1.1)}60%{transform:scale(1)}}
+  footer{text-align:center;padding:1.5rem;font-size:.75rem;color:#bbb;font-weight:700;letter-spacing:1px}
+  .divider{text-align:center;font-size:1.3rem;margin:.5rem 0;letter-spacing:.4rem;opacity:.35;padding:.5rem 0}
+</style>
+
+<canvas id="cc"></canvas>
+<div class="fh" id="fh"></div>
+
+<nav>
+  <button class="nb on" onclick="show('hero',this)">🎂 Home</button>
+  <button class="nb" onclick="show('gallery',this)">📸 Gallery</button>
+  <button class="nb" onclick="show('reasons',this)">💝 Reasons</button>
+  <button class="nb" onclick="show('arabic',this)">🌙 Names</button>
+  <button class="nb" onclick="show('closing',this)">💌 Note</button>
+</nav>
+
+<div id="hero" class="page active">
+  <div class="hero">
+    <span class="he">🎂</span>
+    <h1 class="ht">Happy Birthday<br>RIHAB!</h1>
+    <p class="hs">🎉 Today is YOUR day, ya noor ulain ✨</p>
+    <div class="hn">
+      Out of literally <em>millions</em> of people on Instagram, I somehow found you.
+      You told me you hated men — and I was like "okay but also hi 👋" — and then you were so
+      incredibly kind that I completely forgot what you said. We became best friends, sharing memes
+      at 3am, watching each other's reels, talking until the sun decided to ruin the vibe.
+      I fell for you slowly, then all at once — and right before you left Instagram forever,
+      I told you everything. You stayed. 💫
+      <br><br>
+      Today you turn another year more wonderful. This is your gift. 🎁
+    </div>
+  </div>
+  <footer>✨ Scroll the nav above to explore ✨</footer>
+</div>
+
+<div id="gallery" class="page">
+  <section class="pg">
+    <h2 class="st">Our Little Gallery 📸</h2>
+    <p class="ss">placeholder frames — but the memories are very real 💛</p>
+    <div class="gg">
+      <div class="pc">
+        <div class="pp">😂<span>PRICELESS ARTIFACT</span></div>
+        <div class="cap">Our first meme together 😂<br><small style="color:#bbb;font-weight:600">the one that started it all</small></div>
+      </div>
+      <div class="pc">
+        <div class="pp">🌙<span>2:47 AM CERTIFIED</span></div>
+        <div class="cap">Late night talks 🌙<br><small style="color:#bbb;font-weight:600">when sleep was overrated</small></div>
+      </div>
+      <div class="pc">
+        <div class="pp">💬<span>ARABIC LESSON #1</span></div>
+        <div class="cap">When she taught me Arabic 💬<br><small style="color:#bbb;font-weight:600">my best subject tbh</small></div>
+      </div>
+      <div class="pc">
+        <div class="pp">📱<span>5 HOURS OF REELS</span></div>
+        <div class="cap">My favorite reel we watched 📱<br><small style="color:#bbb;font-weight:600">we said "one more" 47 times</small></div>
+      </div>
+    </div>
+  </section>
+  <footer>✨ Happy Birthday RIHAB ✨</footer>
+</div>
+
+<div id="reasons" class="page">
+  <section class="pg">
+    <h2 class="st">Reasons I Love You 💝</h2>
+    <p class="ss">a completely unbiased, scientifically proven list</p>
+    <ul class="rl" id="rl">
+      <li class="ri"><span class="rn">1</span><p class="rt">You said you hated men. Then you were <strong>SO NICE to me</strong> that I had to re-read the conversation three times. Turns out, you just have great taste in exceptions. 😏</p></li>
+      <li class="ri"><span class="rn">2</span><p class="rt">You share memes with me at <strong>3am like a completely normal person</strong>. Sleep is a social construct and you get it. This is important to me.</p></li>
+      <li class="ri"><span class="rn">3</span><p class="rt">You <strong>taught me Arabic</strong>. You didn't have to do that. And now I can call you ya habibty and it hits different because YOU taught me that word. 🥺</p></li>
+      <li class="ri"><span class="rn">4</span><p class="rt">Watching reels with you is <strong>the superior way to consume content</strong>. No debate. Every reel I watch alone now feels like homework.</p></li>
+      <li class="ri"><span class="rn">5</span><p class="rt">You almost left Instagram and I <strong>had to confess my feelings like a romcom scene</strong>. You somehow stayed. That's character development for both of us. 🎬</p></li>
+      <li class="ri"><span class="rn">6</span><p class="rt">You make every night better. Even the boring ones. <strong>Just knowing you're there</strong> is enough.</p></li>
+      <li class="ri"><span class="rn">7</span><p class="rt">You're my best friend first. <strong>We were friends before anything else</strong> — and that foundation is everything. I lucked out.</p></li>
+      <li class="ri"><span class="rn">8</span><p class="rt">You have <strong>excellent meme taste</strong>. This is a serious criterion. Not everyone passes. You scored 10/10.</p></li>
+      <li class="ri"><span class="rn">9</span><p class="rt">You stayed. Out of every reason you had to disappear — <strong>you stayed</strong>. That means everything.</p></li>
+      <li class="ri"><span class="rn">10</span><p class="rt">Sunrise hits different because of you. Now when I see the sun come up I just think <strong>"Rihab hour"</strong>. You've ruined mornings in the best possible way. ☀️</p></li>
+      <li class="ri"><span class="rn">+∞</span><p class="rt">You exist. On a random day, <strong>you were on the same app as me</strong>. The odds were absurd. I will never stop being grateful for the algorithm that day. 💖</p></li>
+    </ul>
+  </section>
+  <footer>✨ Happy Birthday RIHAB ✨</footer>
+</div>
+
+<div id="arabic" class="page">
+  <section class="pg">
+    <div class="ac">
+      <h2 class="act">What I Call You 🌙</h2>
+      <p class="acs">you taught me these words. they were always meant for you.</p>
+      <div class="ng">
+        <div class="np"><span class="na">يا حبيبتي</span><span class="ne">Ya Habibty — "my darling / my love"</span></div>
+        <div class="np"><span class="na">يا قلبي</span><span class="ne">Ya Qalbi — "my heart"</span></div>
+        <div class="np"><span class="na">يا عمري</span><span class="ne">Ya Umri — "my life / my everything"</span></div>
+        <div class="np"><span class="na">يا نور عيني</span><span class="ne">Ya Noor Ulain — "light of my eyes"</span></div>
+        <div class="np"><span class="na">يا روحي</span><span class="ne">Ya Ruhi — "my soul"</span></div>
+      </div>
+      <p class="am">You gave me these words — and somehow every single one fits you perfectly. You are my habibty, my qalbi, my umri, my noor ulain, my ruhi. You taught me the language and then became the reason I needed it. 💫</p>
+    </div>
+  </section>
+  <footer>✨ Happy Birthday RIHAB ✨</footer>
+</div>
+
+<div id="closing" class="page">
+  <section class="pg" style="max-width:640px">
+    <div class="cb">
+      <h2 class="ct">One Last Thing 💌</h2>
+      <p class="cx">
+        You said you didn't need a gift.<br><br>
+        So instead of a gift — I gave you <em>this</em>. A whole little corner of the internet that exists just to say: I see you, I'm grateful for you, and I think you're extraordinary. Not just today. Every day. But especially today.
+        <br><br>
+        Happy Birthday, Rihab. 🎉<br>
+        <strong>Ya noor ulain.</strong>
+      </p>
+      <span class="bh">💖</span>
+      <p class="cs">Made with love &amp; zero sleep 🌙</p>
+    </div>
+  </section>
+  <footer>✨ Happy Birthday RIHAB — May 2026 ✨</footer>
+</div>
+
+<script>
+function show(id, btn) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nb').forEach(b => b.classList.remove('on'));
+  document.getElementById(id).classList.add('active');
+  btn.classList.add('on');
+  if (id === 'reasons') triggerReasons();
+}
+
+function triggerReasons() {
+  const items = document.querySelectorAll('.ri');
+  items.forEach((el, i) => {
+    el.classList.remove('vis');
+    setTimeout(() => el.classList.add('vis'), i * 90);
+  });
+}
+
+const canvas = document.getElementById('cc');
+const ctx = canvas.getContext('2d');
+let W, H, pieces = [];
+const cols = ['#FF4FA7','#9B5DE5','#FF6B6B','#FFD166','#06D6A0','#4CC9F0'];
+
+function resize() { W = canvas.width = window.innerWidth; H = canvas.height = window.innerHeight; }
+resize();
+window.addEventListener('resize', resize);
+
+function mkP() {
+  return { x: Math.random()*W, y: Math.random()*-H, w: Math.random()*9+4, h: Math.random()*5+3,
+    color: cols[Math.floor(Math.random()*cols.length)], speed: Math.random()*2.5+1.2,
+    angle: Math.random()*360, spin: (Math.random()-.5)*5, drift: (Math.random()-.5)*1.2 };
+}
+for (let i=0;i<120;i++){let p=mkP();p.y=Math.random()*H;pieces.push(p);}
+
+(function loop() {
+  ctx.clearRect(0,0,W,H);
+  pieces.forEach(p=>{
+    ctx.save();ctx.translate(p.x,p.y);ctx.rotate(p.angle*Math.PI/180);
+    ctx.fillStyle=p.color;ctx.fillRect(-p.w/2,-p.h/2,p.w,p.h);ctx.restore();
+    p.y+=p.speed;p.x+=p.drift;p.angle+=p.spin;
+    if(p.y>H+20){Object.assign(p,mkP());p.y=-20;}
+  });
+  requestAnimationFrame(loop);
+})();
+
+const fh = document.getElementById('fh');
+const em = ['💖','💕','💗','💓','✨','💝','💞','🌸'];
+function spawnH(){
+  const el=document.createElement('div');el.className='heart';
+  el.textContent=em[Math.floor(Math.random()*em.length)];
+  el.style.left=Math.random()*100+'vw';
+  el.style.animationDuration=(Math.random()*10+8)+'s';
+  el.style.animationDelay=(Math.random()*2)+'s';
+  el.style.fontSize=(Math.random()*1+0.8)+'rem';
+  fh.appendChild(el);setTimeout(()=>el.remove(),20000);
+}
+for(let i=0;i<12;i++)spawnH();
+setInterval(spawnH,1800);
+</script>
